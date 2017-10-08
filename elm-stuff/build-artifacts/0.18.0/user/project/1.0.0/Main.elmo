@@ -1,0 +1,112 @@
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'AddTask':
+				return A2(
+					_elm_lang$core$Debug$log,
+					'tasks',
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							tasks: {
+								ctor: '::',
+								_0: {name: model.taskName, duration: 0, startTime: 0, endTime: 0},
+								_1: model.tasks
+							}
+						}));
+			case 'Input':
+				return A2(
+					_elm_lang$core$Debug$log,
+					'taskName',
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{taskName: _p0._0}));
+			default:
+				return model;
+		}
+	});
+var _user$project$Main$initialModel = {
+	tasks: {ctor: '[]'},
+	taskName: '',
+	workStartTime: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {tasks: a, taskName: b, workStartTime: c};
+	});
+var _user$project$Main$Task = F4(
+	function (a, b, c, d) {
+		return {name: a, duration: b, startTime: c, endTime: d};
+	});
+var _user$project$Main$AddStart = function (a) {
+	return {ctor: 'AddStart', _0: a};
+};
+var _user$project$Main$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _user$project$Main$AddTask = {ctor: 'AddTask'};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Work Agenda'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$form,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onSubmit(_user$project$Main$AddTask),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('text'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$Input),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$value(model.taskName),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$button,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('submit'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Add Task'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Main$initialModel, update: _user$project$Main$update, view: _user$project$Main$view})();
