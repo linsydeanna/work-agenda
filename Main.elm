@@ -7,63 +7,76 @@ import Html.Events exposing (..)
 
 type alias Model =
     { tasks : List Task
-    , taskName : String
     , workStartTime : Maybe Int
     }
 
 
 type alias Task =
     { name : String
-    , duration : Int
-    , startTime : Int
-    , endTime : Int
+    , id : Int
+    , duration : Maybe Int
+    , startTime : Maybe Int -- computed
+    , endTime : Maybe Int -- computed
+    }
+
+
+emptyTask =
+    { name = ""
+    , id = 0
+    , duration = Nothing
+    , startTime = Nothing
+    , endTime = Nothing
     }
 
 
 initialModel : Model
 initialModel =
-    { tasks = []
-    , taskName = ""
+    { tasks = [ emptyTask ]
     , workStartTime = Nothing
     }
 
 
 type Msg
     = AddTask
-    | Input String
+    | TaskInput String
+    | DurationInput String
+    | TimeInput String
     | AddStart Int
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        AddTask ->
-            Debug.log "tasks"
-                { model
-                    | tasks = ({ name = model.taskName, duration = 0, startTime = 0, endTime = 0 } :: model.tasks)
-                }
-
-        Input name ->
-            Debug.log "taskName"
-                { model | taskName = name }
-
+        -- AddTask ->
+        --     Debug.log "tasks"
+        --         { model
+        --             | tasks = ({ name = model.taskName, duration = 0, startTime = 0, endTime = 0 } :: model.tasks)
+        --         }
+        -- Input name ->
+        --     Debug.log "taskName"
+        --         { model | taskName = name }
         _ ->
             model
+
+
+task : Model -> Html Msg
+task model =
+    input []
+        [ input
+            [ type_ "text"
+            , onInput Input
+            , value model.taskName
+            ]
+            []
+        , button [ type_ "submit" ] [ text "Add Task" ]
+        ]
 
 
 view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text "Work Agenda" ]
-        , Html.form [ onSubmit AddTask ]
-            [ input
-                [ type_ "text"
-                , onInput Input
-                , value model.taskName
-                ]
-                []
-            , button [ type_ "submit" ] [ text "Add Task" ]
-            ]
+        , taskForm model
         ]
 
 
