@@ -38,7 +38,7 @@ initialModel =
 
 type Msg
     = AddTask
-    | TaskInput String
+    | TaskInput Int String
     | DurationInput String
     | TimeInput String
     | AddStart Int
@@ -47,28 +47,62 @@ type Msg
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        -- AddTask ->
-        --     Debug.log "tasks"
-        --         { model
-        --             | tasks = ({ name = model.taskName, duration = 0, startTime = 0, endTime = 0 } :: model.tasks)
-        --         }
-        -- Input name ->
-        --     Debug.log "taskName"
-        --         { model | taskName = name }
+        TaskInput id taskName ->
+            let
+                newTasks =
+                    editTask model.tasks id taskName
+            in
+                { model | tasks = newTasks }
+
         _ ->
             model
 
 
-task : Model -> Html Msg
-task model =
-    input []
+editTask : List Task -> Int -> String -> List Task
+editTask tasks id taskName =
+    List.map
+        (\task ->
+            if task.id == id then
+                { task | name = taskName }
+            else
+                task
+        )
+        tasks
+
+
+columnHeader =
+    div []
+        [ div
+            []
+            []
+        , div
+            []
+            []
+        , div
+            []
+            []
+        , div
+            []
+            []
+        ]
+
+
+taskRow : Task -> Html Msg
+taskRow task =
+    div []
         [ input
-            [ type_ "text"
-            , onInput Input
-            , value model.taskName
+            [ onInput <| TaskInput task.id
             ]
             []
-        , button [ type_ "submit" ] [ text "Add Task" ]
+        , input
+            []
+            []
+        , input
+            []
+            []
+        , input
+            []
+            []
         ]
 
 
@@ -76,7 +110,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text "Work Agenda" ]
-        , taskForm model
+        , div [] <| List.map taskRow model.tasks
         ]
 
 
